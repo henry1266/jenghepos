@@ -1,144 +1,37 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>發送訊息與資料檢索</title>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  <title>藥品清單</title>
+  <style>
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #aaa; padding: 8px; }
+    th { background-color: #eee; }
+  </style>
 </head>
 <body>
-  <h1>發送訊息與資料檢索</h1>
-  <p>歡迎使用此功能！！！</p>
-
-  <!-- 發送訊息 -->
-  <form method="post" action="/send_message">
-    <label for="plineField1">聊天室ID：</label>
-    <input type="text" id="plineField2" name="plineField2" required>
-    <br><br>
-    <label for="message">訊息內容：</label>
-    <textarea id="message" name="message" rows="4" cols="50" required>興安藥局AI助手:</textarea>
-    <br><br>
-    <input type="submit" value="發送訊息">
-  </form>
-
-  <hr>
-
-
-<!-- Input field with autocomplete -->
-<label for="patientSearch">選擇患者姓名：</label>
-<input type="text" id="patientSearch" placeholder="輸入患者姓名">
-<br><br>
-
-
-  <!-- 發送處方通知 -->
-  <form method="post" action="/send_premessage">
-    <label for="plineField">聊天室ID：</label>
-    <input type="text" id="plineField" name="plineField">
-    <br><br>
-    <label for="panme">姓名：</label>
-    <input type="text" id="panme" name="panme" required>
-    <br><br>
-    <label for="startdate">開始：</label>
-    <input type="text" id="startdate" name="startdate" required>
-
-    <label for="enddate">結束：</label>
-    <input type="text" id="enddate" name="enddate" required>
-    <br><br>
-    <label for="precount">第:</label>
-    <input type="text" id="precount" name="precount" required>
-    <label for="pretotal">共:</label>
-    <input type="text" id="pretotal" name="pretotal" required>
-    <br><br>
-    <input type="submit" value="發送處方通知">
-  </form>
-
-  <hr>
-
-  <!-- 結束處方通知 -->
-  <form method="post" action="/send_endmessage">
-    <label for="plineField1">聊天室ID：</label>
-    <input type="text" id="plineField1" name="plineField1" readonly>
-    <br><br>
-    <label for="panme1">姓名：</label>
-    <input type="text" id="panme1" name="panme1" required>
-    <br><br>
-    <label for="enddate1">結束：</label>
-    <input type="text" id="enddate1" name="enddate1" required>
-    <br><br>
-    <input type="submit" value="結束處方通知">
-  </form>
-
-  <hr>
-
-  <!-- 列出符合條件的患者資料 -->
-  <form method="get" action="/list_patients">
-    <input type="submit" value="列出符合條件的患者資料">
-  </form>
-
-  
-  <script>
-         $(document).ready(function() {
-    $("#patientSearch").autocomplete({
-      source: async function(request, response) {
-        try {
-          const searchQuery = request.term;
-          const res = await fetch(`/patients?search=${encodeURIComponent(searchQuery)}`);
-          const patients = await res.json();
-          const filteredPatients = patients.filter(patient => patient.pname.includes(searchQuery));
-          response(filteredPatients.map(patient => ({
-            label: patient.pname,
-            value: patient.pname,
-            pline: patient.pline
-          })));
-        } catch (error) {
-          console.error("Error fetching patients:", error);
-        }
-      },
-      select: function(event, ui) {
-        $("#plineField").val(ui.item.pline);
-        $("#plineField1").val(ui.item.pline);
-        $("#panme").val(ui.item.value);
-        $("#panme1").val(ui.item.value);
-      }
-    });
-
-    $("#patientSearch").on("keypress", function(event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        const searchQuery = $(this).val();
-        // Perform additional actions if needed on Enter key press
-      }
-    });
-  });
-    document.addEventListener("DOMContentLoaded", async () => {
-      const patientSelect = document.getElementById("patientSelect");
-      const plineField = document.getElementById("plineField");
-      const plineField1 = document.getElementById("plineField1");
-      const panme = document.getElementById("panme");
-      const panme1 = document.getElementById("panme1");
-      const startdate = document.getElementById("startdate");
-      const today = new Date();
-      const formattedDate = today.toISOString().split('T')[0].replace(/-/g, '');
-      startdate.value = formattedDate;
-      const enddate = document.getElementById("enddate");
-      //enddate.value = "2025";
-      const endDateObj = new Date(today);
-      endDateObj.setDate(endDateObj.getDate() + 5);
-      const formattedEndDate = endDateObj.toISOString().split('T')[0].replace(/-/g, '');
-      enddate.value = formattedEndDate;
-      const enddate1 = document.getElementById("enddate1");
-      enddate1.value = "2025";
-
-      const pretotal = document.getElementById("pretotal");
-      pretotal.value = 3;
-      
-    });
-  </script>
-
-
-
-
+  <h1>藥品清單</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>貨號</th>
+        <th>商品名稱</th>
+        <th>成本</th>
+        <th>GX售價</th>
+        <th>條碼</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% drugs.forEach(drug => { %>
+        <tr>
+          <td><%= drug.code %></td>
+          <td><%= drug.name %></td>
+          <td><%= drug.cost %></td>
+          <td><%= drug.gxRetailPrice %></td>
+          <td><%= drug.barcode %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
 </body>
 </html>
