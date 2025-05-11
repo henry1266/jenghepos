@@ -64,7 +64,7 @@
     button[type="submit"]:hover {
       background-color: #4cae4c;
     }
-    .container { max-width: 900px; margin: auto; }
+    .container { max-width: 1000px; margin: auto; }
   </style>
 </head>
 <body>
@@ -94,9 +94,18 @@
           <label for="tmuhRetailPrice">北醫零售價</label>
           <input type="number" id="tmuhRetailPrice" name="tmuhRetailPrice" step="1">
         </div>
+                <div class="form-col">
+           <label for="emberPrice">會員價</label>
+            <input type="number" id="emberPrice" name="emberPrice" step="1">
+        </div>
+        <div class="form-col">
+          <label for="mployeePrice">員工價</label>
+          <input type="number" id="mployeePrice" name="mployeePrice" step="1">
+        </div>
+      
       </div>
 
-            <div class="form-row">
+      <div class="form-row">
         <div class="form-col">
            <label for="cost">成本</label>
             <input type="number" id="cost" name="cost" step="1">
@@ -105,23 +114,31 @@
           <label for="costWithoutTax">未稅成本</label>
           <input type="number" id="costWithoutTax" name="costWithoutTax" step="1">
         </div>
+                <div class="form-col">
+           <label for="inventoryUnit">庫存單位</label>
+            <input type="text" id="inventoryUnit" name="inventoryUnit" step="1">
+        </div>
+        <div class="form-col">
+          <label for="purchaseUnit">進貨單位</label>
+          <input type="text" id="purchaseUnit" name="purchaseUnit" step="1">
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="vendorCode">廠商代碼:</label>
-        <input type="text" id="vendorCode" name="vendorCode">
+      <div class="form-row">
+        <div class="form-col">
+           <label for="vendorCode">廠商代碼</label>
+            <input type="text" id="vendorCode" name="vendorCode">
+        </div>
+        <div class="form-col">
+          <label for="departmentCode">部門代碼</label>
+          <input type="text" id="departmentCode" name="departmentCode">
+        </div>
+        <div class="form-col">
+          <label for="barcode">國際條碼</label>
+          <input type="text" id="barcode" name="barcode">
+        </div>
       </div>
-
-      <div class="form-group">
-        <label for="barcode">國際條碼:</label>
-        <input type="text" id="barcode" name="barcode">
-      </div>
-
-      <div class="form-group">
-        <label for="departmentCode">部門代碼:</label>
-        <input type="text" id="departmentCode" name="departmentCode">
-      </div>
-
+      
       <div class="form-row">
         <div class="form-col">
            <label for="taxType">銷售稅別</label>
@@ -150,28 +167,6 @@
         <div class="form-col">
           <label for="unitsPerBox">入數</label>
           <input type="text" id="unitsPerBox" name="unitsPerBox">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-col">
-           <label for="emberPrice">會員價</label>
-            <input type="number" id="emberPrice" name="emberPrice" step="1">
-        </div>
-        <div class="form-col">
-          <label for="mployeePrice">員工價</label>
-          <input type="number" id="mployeePrice" name="mployeePrice" step="1">
-        </div>
-      </div>
-      
-
-      <div class="form-row">
-        <div class="form-col">
-           <label for="inventoryUnit">庫存單位</label>
-            <input type="text" id="inventoryUnit" name="inventoryUnit" step="1">
-        </div>
-        <div class="form-col">
-          <label for="purchaseUnit">進貨單位</label>
-          <input type="text" id="purchaseUnit" name="purchaseUnit" step="1">
         </div>
       </div>
 
