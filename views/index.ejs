@@ -4,34 +4,77 @@
   <meta charset="UTF-8">
   <title>藥品清單</title>
   <style>
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #aaa; padding: 8px; }
-    th { background-color: #eee; }
+    body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+    h1 { color: #333; }
+    .header-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .add-button {
+      background-color: #5cb85c;
+      color: white;
+      padding: 10px 15px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    .add-button:hover {
+      background-color: #4cae4c;
+    }
+    table { border-collapse: collapse; width: 100%; background-color: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    th { background-color: #f0f0f0; color: #333; font-weight: bold; }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+    .container { max-width: 1200px; margin: auto; }
   </style>
 </head>
 <body>
-  <h1>藥品清單</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>貨號</th>
-        <th>商品名稱</th>
-        <th>成本</th>
-        <th>GX售價</th>
-        <th>條碼</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% drugs.forEach(drug => { %>
+  <div class="container">
+    <div class="header-controls">
+      <h1>藥品清單</h1>
+      <a href="/drugs/new" class="add-button">新增商品</a>
+    </div>
+    <table>
+      <thead>
         <tr>
-          <td><%= drug.code %></td>
-          <td><%= drug.name %></td>
-          <td><%= drug.cost %></td>
-          <td><%= drug.gxRetailPrice %></td>
-          <td><%= drug.barcode %></td>
+          <th>貨號</th>
+          <th>商品名稱</th>
+          <th>商品簡稱</th>
+          <th>GX零售價</th>
+          <th>北醫零售價</th>
+          <th>成本</th>
+          <th>未稅成本</th>
+          <th>廠商代碼</th>
+          <th>國際條碼</th>
+          <th>部門代碼</th>
+          <th>庫存單位</th>
+          <th>是否扣庫存</th>
+          <th>商品狀態</th>
         </tr>
-      <% }) %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% if(drugs && drugs.length > 0) { %>
+          <% drugs.forEach(drug => { %>
+            <tr>
+              <td><%= drug.code %></td>
+              <td><%= drug.name %></td>
+              <td><%= drug.shortName ? drug.shortName : '' %></td>
+              <td><%= drug.gxRetailPrice !== null && drug.gxRetailPrice !== undefined ? drug.gxRetailPrice : '' %></td>
+              <td><%= drug.tmuhRetailPrice !== null && drug.tmuhRetailPrice !== undefined ? drug.tmuhRetailPrice : '' %></td>
+              <td><%= drug.cost !== null && drug.cost !== undefined ? drug.cost : '' %></td>
+              <td><%= drug.costWithoutTax !== null && drug.costWithoutTax !== undefined ? drug.costWithoutTax : '' %></td>
+              <td><%= drug.vendorCode ? drug.vendorCode : '' %></td>
+              <td><%= drug.barcode ? drug.barcode : '' %></td>
+              <td><%= drug.departmentCode ? drug.departmentCode : '' %></td>
+              <td><%= drug.inventoryUnit ? drug.inventoryUnit : '' %></td>
+              <td><%= drug.deductFromStock ? '是' : '否' %></td>
+              <td><%= drug.status !== null && drug.status !== undefined ? drug.status : '' %></td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="13" style="text-align: center;">目前沒有藥品資料</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
 </body>
 </html>
