@@ -7,31 +7,44 @@
     body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
     h1 { color: #333; }
     .header-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .add-button {
+    .button {
       background-color: #5cb85c;
       color: white;
       padding: 10px 15px;
       text-decoration: none;
       border-radius: 4px;
       font-size: 16px;
+      border: none;
+      cursor: pointer;
+      margin-left: 10px;
     }
-    .add-button:hover {
+    .button:hover {
       background-color: #4cae4c;
+    }
+    .toggle-button {
+        background-color: #f0ad4e;
+    }
+    .toggle-button:hover {
+        background-color: #ec971f;
     }
     table { border-collapse: collapse; width: 100%; background-color: #fff; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
     th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
     th { background-color: #f0f0f0; color: #333; font-weight: bold; }
     tr:nth-child(even) { background-color: #f9f9f9; }
-    .container { max-width: 1200px; margin: auto; }
+    .container { max-width: 1600px; margin: auto; }
+    .hidden-column { display: none; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header-controls">
       <h1>藥品清單</h1>
-      <a href="/drugs/new" class="add-button">新增商品</a>
+      <div>
+        <button id="toggleColumnsButton" class="button toggle-button">顯示/隱藏詳細資料</button>
+        <a href="/drugs/new" class="button">新增商品</a>
+      </div>
     </div>
-    <table>
+    <table id="drugsTable">
       <thead>
         <tr>
           <th>貨號</th>
@@ -47,6 +60,14 @@
           <th>庫存單位</th>
           <th>是否扣庫存</th>
           <th>商品狀態</th>
+          <th class="togglable-column hidden-column">銷售稅別</th>
+          <th class="togglable-column hidden-column">價格代碼</th>
+          <th class="togglable-column hidden-column">會員價</th>
+          <th class="togglable-column hidden-column">員工價</th>
+          <th class="togglable-column hidden-column">成本識別</th>
+          <th class="togglable-column hidden-column">進貨單位</th>
+          <th class="togglable-column hidden-column">入數</th>
+          <th class="togglable-column hidden-column">備註</th>
         </tr>
       </thead>
       <tbody>
@@ -66,15 +87,55 @@
               <td><%= drug.inventoryUnit ? drug.inventoryUnit : '' %></td>
               <td><%= drug.deductFromStock ? '是' : '否' %></td>
               <td><%= drug.status !== null && drug.status !== undefined ? drug.status : '' %></td>
+              <td class="togglable-column hidden-column"><%= drug.taxType !== null && drug.taxType !== undefined ? drug.taxType : '' %></td>
+              <td class="togglable-column hidden-column"><%= drug.priceCode !== null && drug.priceCode !== undefined ? drug.priceCode : '' %></td>
+              <td class="togglable-column hidden-column"><%= drug.memberPrice !== null && drug.memberPrice !== undefined ? drug.memberPrice : '' %></td>
+              <td class="togglable-column hidden-column"><%= drug.employeePrice !== null && drug.employeePrice !== undefined ? drug.employeePrice : '' %></td>
+              <td class="togglable-column hidden-column"><%= drug.costId !== null && drug.costId !== undefined ? drug.costId : '' %></td>
+              <td class="togglable-column hidden-column"><%= drug.purchaseUnit ? drug.purchaseUnit : '' %></td>
+              <td class="togglable-column hidden-column"><%= drug.unitsPerBox ? drug.unitsPerBox : '' %></td>
+              <td class="togglable-column hidden-column"><%= drug.note ? drug.note : '' %></td>
             </tr>
           <% }) %>
         <% } else { %>
           <tr>
-            <td colspan="13" style="text-align: center;">目前沒有藥品資料</td>
+            <td colspan="21" style="text-align: center;">目前沒有藥品資料</td>
           </tr>
         <% } %>
       </tbody>
     </table>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const toggleButton = document.getElementById('toggleColumnsButton');
+      const table = document.getElementById('drugsTable');
+      // Get all th elements with the class 'togglable-column' to determine their indices
+      const headerCells = Array.from(table.querySelectorAll('thead th'));
+      const togglableColumnIndices = [];
+      headerCells.forEach((th, index) => {
+        if (th.classList.contains('togglable-column')) {
+          togglableColumnIndices.push(index);
+        }
+      });
+
+      toggleButton.addEventListener('click', function() {
+        // Toggle header cells
+        togglableColumnIndices.forEach(index => {
+          headerCells[index].classList.toggle('hidden-column');
+        });
+
+        // Toggle body cells
+        const dataRows = table.querySelectorAll('tbody tr');
+        dataRows.forEach(row => {
+          togglableColumnIndices.forEach(index => {
+            if(row.cells[index]) { // Check if cell exists
+                row.cells[index].classList.toggle('hidden-column');
+            }
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>
