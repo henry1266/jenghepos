@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>發送訊息與資料檢索</title>
+</head>
+<body>
+  <h1>發送訊息與資料檢索</h1>
+  <p>歡迎使用此功能</p>
+
+  <!-- 發送訊息 -->
+  <form method="post" action="/send_message">
+    <label for="plineField1">聊天室ID：</label>
+    <input type="text" id="plineField2" name="plineField2" required>
+    <br><br>
+    <label for="message">訊息內容：</label>
+    <textarea id="message" name="message" rows="4" cols="50" required>興安藥局AI助手:</textarea>
+    <br><br>
+    <input type="submit" value="發送訊息">
+  </form>
+
+  <hr>
+
+<label for="patientSearch">輸入患者姓名：</label>
+<input type="text" id="patientSearch" placeholder="輸入患者姓名" />
+<br><br>
+
+<!-- Existing dropdown for patient selection -->
+<label for="patientSelect">選擇患者姓名：</label>
+<select id="patientSelect">
+  <option value="">請選擇患者</option>
+</select>
+<br><br>
+
+
+  <!-- 發送處方通知 -->
+  <form method="post" action="/send_premessage">
+    <label for="plineField">聊天室ID：</label>
+    <input type="text" id="plineField" name="plineField">
+    <br><br>
+    <label for="panme">姓名：</label>
+    <input type="text" id="panme" name="panme" required>
+    <br><br>
+    <label for="startdate">開始：</label>
+    <input type="text" id="startdate" name="startdate" required>
+
+    <label for="enddate">結束：</label>
+    <input type="text" id="enddate" name="enddate" required>
+    <br><br>
+    <label for="precount">第:</label>
+    <input type="text" id="precount" name="precount" required>
+    <label for="pretotal">共:</label>
+    <input type="text" id="pretotal" name="pretotal" required>
+    <br><br>
+    <input type="submit" value="發送處方通知">
+  </form>
+
+  <hr>
+
+  <!-- 結束處方通知 -->
+  <form method="post" action="/send_endmessage">
+    <label for="plineField1">聊天室ID：</label>
+    <input type="text" id="plineField1" name="plineField1" readonly>
+    <br><br>
+    <label for="panme1">姓名：</label>
+    <input type="text" id="panme1" name="panme1" required>
+    <br><br>
+    <label for="enddate">結束：</label>
+    <input type="text" id="enddate" name="enddate" required>
+    <br><br>
+    <input type="submit" value="結束處方通知">
+  </form>
+
+  <hr>
+
+  <!-- 列出符合條件的患者資料 -->
+  <form method="get" action="/list_patients">
+    <input type="submit" value="列出符合條件的患者資料">
+  </form>
+
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const patientSelect = document.getElementById("patientSelect");
+      const plineField = document.getElementById("plineField");
+      const plineField1 = document.getElementById("plineField1");
+      const panme = document.getElementById("panme");
+      const panme1 = document.getElementById("panme1");
+      const startdate = document.getElementById("startdate");
+      const today = new Date();
+      const formattedDate = today.toISOString().split('T')[0].replace(/-/g, '');
+      startdate.value = formattedDate;
+      const enddate = document.getElementById("enddate");
+      //enddate.value = "2025";
+      const endDateObj = new Date(today);
+      endDateObj.setDate(endDateObj.getDate() + 5);
+      const formattedEndDate = endDateObj.toISOString().split('T')[0].replace(/-/g, '');
+      enddate.value = formattedEndDate;
+      
+      const pretotal = document.getElementById("pretotal");
+      pretotal.value = 3;
+      try {
+        // 從後端 API 獲取符合條件的 patients
+        const response = await fetch("/patients");
+        const patients = await response.json();
+
+        // 動態加入符合條件的患者到下拉選單
+        patients.forEach(patient => {
+          const option = document.createElement("option");
+          option.value = patient.pline; // 將 pline 設為 value
+          option.textContent = patient.pname; // 顯示 pname
+          patientSelect.appendChild(option);
+        });
+
+         // 當選擇患者時，顯示對應的 pline 和患者姓名
+        patientSelect.addEventListener("change", (event) => {
+          const selectedOption = patientSelect.options[patientSelect.selectedIndex];
+          plineField.value = selectedOption.value; // 顯示選中的 pline
+          plineField1.value = selectedOption.value; // 顯示選中的 pline
+          plineField2.value = selectedOption.value; // 顯示選中的 pline
+          panme.value = selectedOption.textContent; // 顯示選中的患者姓名
+          panme1.value = selectedOption.textContent; // 顯示選中的患者姓名
+        });
+      } catch (error) {
+        console.error("Error fetching patients:", error);
+      }
+    });
+  </script>
+
+
+
+
+</body>
+</html>
