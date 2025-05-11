@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>新增藥品</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+    h1 { color: #333; }
+    form { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #555;
+    }
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: calc(100% - 22px);
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    input[type="checkbox"] {
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group-checkbox {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    .form-group-checkbox label {
+        margin-bottom: 0;
+        margin-left: 5px;
+        font-weight: normal;
+    }
+    button[type="submit"] {
+      background-color: #5cb85c;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button[type="submit"]:hover {
+      background-color: #4cae4c;
+    }
+    .container { max-width: 600px; margin: auto; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>新增藥品</h1>
+    <form action="/drugs" method="POST">
+      <div class="form-group">
+        <label for="code">貨號:</label>
+        <input type="text" id="code" name="code" required>
+      </div>
+
+      <div class="form-group">
+        <label for="name">商品名稱:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="shortName">商品簡稱:</label>
+        <input type="text" id="shortName" name="shortName">
+      </div>
+
+      <div class="form-group">
+        <label for="gxRetailPrice">GX零售價:</label>
+        <input type="number" id="gxRetailPrice" name="gxRetailPrice" step="0.01">
+      </div>
+
+      <div class="form-group">
+        <label for="tmuhRetailPrice">北醫零售價:</label>
+        <input type="number" id="tmuhRetailPrice" name="tmuhRetailPrice" step="0.01">
+      </div>
+
+      <div class="form-group">
+        <label for="cost">成本:</label>
+        <input type="number" id="cost" name="cost" step="0.01" required>
+      </div>
+
+      <div class="form-group">
+        <label for="vendorCode">廠商代碼:</label>
+        <input type="text" id="vendorCode" name="vendorCode">
+      </div>
+
+      <div class="form-group">
+        <label for="barcode">國際條碼:</label>
+        <input type="text" id="barcode" name="barcode">
+      </div>
+
+      <div class="form-group">
+        <label for="departmentCode">部門代碼:</label>
+        <input type="text" id="departmentCode" name="departmentCode">
+      </div>
+
+      <div class="form-group">
+        <label for="taxType">銷售稅別 (數字):</label>
+        <input type="number" id="taxType" name="taxType">
+      </div>
+
+      <div class="form-group">
+        <label for="priceCode">價格代碼 (數字):</label>
+        <input type="number" id="priceCode" name="priceCode">
+      </div>
+
+      <div class="form-group-checkbox">
+        <input type="checkbox" id="deductFromStock" name="deductFromStock" value="true">
+        <label for="deductFromStock">是否扣庫存</label>
+      </div>
+
+      <div class="form-group">
+        <label for="status">商品狀態 (數字):</label>
+        <input type="number" id="status" name="status">
+      </div>
+
+      <div class="form-group">
+        <label for="memberPrice">會員價:</label>
+        <input type="number" id="memberPrice" name="memberPrice" step="0.01">
+      </div>
+
+      <div class="form-group">
+        <label for="employeePrice">員工價:</label>
+        <input type="number" id="employeePrice" name="employeePrice" step="0.01">
+      </div>
+
+      <div class="form-group">
+        <label for="costId">成本識別 (數字):</label>
+        <input type="number" id="costId" name="costId">
+      </div>
+
+      <div class="form-group">
+        <label for="inventoryUnit">庫存單位:</label>
+        <input type="text" id="inventoryUnit" name="inventoryUnit">
+      </div>
+
+      <div class="form-group">
+        <label for="purchaseUnit">進貨單位:</label>
+        <input type="text" id="purchaseUnit" name="purchaseUnit">
+      </div>
+
+      <div class="form-group">
+        <label for="unitsPerBox">入數 (文字或數字):</label>
+        <input type="text" id="unitsPerBox" name="unitsPerBox">
+      </div>
+
+      <div class="form-group">
+        <label for="costWithoutTax">未稅成本:</label>
+        <input type="number" id="costWithoutTax" name="costWithoutTax" step="0.01">
+      </div>
+
+      <div class="form-group">
+        <label for="note">備註:</label>
+        <input type="text" id="note" name="note">
+      </div>
+
+      <button type="submit">新增藥品</button>
+    </form>
+  </div>
+</body>
+</html>
