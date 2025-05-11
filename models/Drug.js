@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const drugSchema = new mongoose.Schema({
-  code: String,              // 貨號
+  code: { type: String, unique: true },              // 貨號
   name: String,              // 商品名稱
   shortName: String,         // 商品簡稱
   gxRetailPrice: Number,     
